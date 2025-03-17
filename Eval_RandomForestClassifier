@@ -1,0 +1,40 @@
+Con la llamada por defecto: rf_model = RandomForestClassifier()
+Obtenemos los resultados:
+Accuracy: 0.6874608543154203
+Precision: 0.6724738552511441
+Recall: 0.6874608543154203
+
+Cambiando los parámetros, advertimos que el único que produce cambio es "class_weight" (de None a "balanced" o "balanced_subsample"),
+obteniendo los siguientes resultados:
+Accuracy: 0.6844544657396968 (empeoró)
+Precision: 0.6766980055666834 (mejoró)
+Recall: 0.6844544657396968 (empeoró)
+
+Usamos GridSearchCV para encontrar la mejor combinación de parámetros con el siguiente código:
+
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [5, 10, 15],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'max_features': ['sqrt', 'log2']
+}
+
+grid_search = GridSearchCV(estimator=rf_model, param_grid=param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+best_params = grid_search.best_params_
+
+Nos indica los siguientes parámetros: 
+{'max_depth': 5, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+
+Al probarlos, obtenemos los mismos resultados que al hacer la llamada por defecto:
+Accuracy: 0.6874608543154203
+Precision: 0.6724738552511441
+Recall: 0.687460854315420
+
+
+
+
+
+
